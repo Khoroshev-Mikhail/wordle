@@ -1,0 +1,6 @@
+.grid{
+    width: 368px;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+}
