@@ -1,0 +1,19 @@
+.keyboard {
+    display: flex;
+    flex-direction: column;
+}
+.keyboard__row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.keyboard__row button {
+    display: inline-block;
+    border: 1px solid black;
+    min-width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+}
