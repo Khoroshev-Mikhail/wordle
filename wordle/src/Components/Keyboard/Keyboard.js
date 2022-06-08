@@ -8,6 +8,7 @@ import './keyboard.css'
 
 //Переписать через хуки
 //Переписать покемоны через хуки
+
 export default class Keyboard extends React.Component{
     constructor(props){
         super(props)
