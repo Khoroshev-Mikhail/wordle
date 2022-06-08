@@ -7,7 +7,6 @@
     border: none;
     width: 70px;
     height: 70px;
-    background-color: gray;
     margin: 3px;
     font-size: 60px;
     line-height: 70px;
@@ -15,4 +14,11 @@
     color: white;
     font-weight: bold;
     text-transform: uppercase;
+    border: 3px solid white;
+}
+.string__letterGreen{
+    background-color: green;
+}
+.string__letterYellow{
+    background-color: yellow;
 }

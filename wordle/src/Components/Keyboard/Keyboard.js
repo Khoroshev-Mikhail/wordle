@@ -1,6 +1,13 @@
 import React from "react";
 import './keyboard.css'
 
+// https://overreacted.io/a-complete-guide-to-useeffect/
+
+// https://beta.reactjs.org/learn/describing-the-ui
+// https://beta-reactjs-org-git-effects-fbopensource.vercel.app/learn/synchronizing-with-effects
+
+//Переписать через хуки
+//Переписать покемоны через хуки
 export default class Keyboard extends React.Component{
     constructor(props){
         super(props)
@@ -9,6 +16,31 @@ export default class Keyboard extends React.Component{
         let key = e.target.value
         this.props.write(key)
     }
+    keyboardKeydown = (e) => {
+        console.log("e", e);
+        if(e.key === 'Enter'){
+            this.props.try()
+        } else if(e.key === 'Backspace'){
+            this.props.backspace()
+        } else{
+            if(e.keyCode >= 66 && e.keyCode <= 90){
+                this.props.write(e.key)
+            }
+        }
+    }
+    componentDidMount(){
+        // getEventListeners(document)
+
+        console.log("componentDidMount")
+        
+        document.addEventListener("keydown", this.keyboardKeydown)
+    }
+
+    componentWillUnmount() {
+        console.log("componentWillUnmount")
+        document.removeEventListener('keydown', this.keyboardKeydown)
+    }
+
     render(){
         return(
             <div className="keyboard">

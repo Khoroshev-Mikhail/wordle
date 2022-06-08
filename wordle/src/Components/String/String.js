@@ -3,22 +3,35 @@ import './string.css'
 /*document.onkeydown = (e) => {
     console.log(e.key)
 }*/
+
+
 export default class String extends React.Component{
     constructor(props){
         super(props)
-        //this.push = this.push.bind(this)
     }
-    /*push(e){
-        console.log(document.onkeydown)
-    }*/
+    isHit = (i) => {        
+        if(!this.props.attempt[i]){
+            return ''
+        }
+        if(!this.props.tried){
+            return ''
+        }
+        const letter = this.props.attempt[i].toLowerCase()
+        const trueLetter = this.props.trueWord[i].toLowerCase()
+        if(letter === trueLetter){
+            return 'string__letterGreen'
+        } else if(this.props.trueWord.toLowerCase().includes(letter)){
+            return 'string__letterYellow'
+        }
+    }
     render(){
         return(
             <div className="string">
-                <div>{this.props.attempt && this.props.attempt[0]}</div>
-                <div>{this.props.attempt && this.props.attempt[1]}</div>
-                <div>{this.props.attempt && this.props.attempt[2]}</div>
-                <div>{this.props.attempt && this.props.attempt[3]}</div>
-                <div>{this.props.attempt && this.props.attempt[4]}</div>
+                {Array(5).fill().map((_, i) => {
+                    return (
+                        <div key={i} className={this.isHit(i)}> {this.props.attempt && this.props.attempt[i]}</div>
+                    )
+                })}
             </div>
         )
     }
