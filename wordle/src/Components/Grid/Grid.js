@@ -6,17 +6,6 @@ import './grid.css'
 
 const trueWord = 'SOFIA';
 
-
-const arr = ["1111", "2222", "3333"]
-const key = "X"
-const id = 1
-
-
-
-// ["1111", "2222X", "3333"]
-
-// const newArr = [...arr.slice(0,-1), arr[arr.length - 1] + letter]
-
 export default function Grid(){
     const [id, setId] = useState(0);
     const [attempt, setAttempt] = useState(['', '', '', '', '']);
@@ -48,6 +37,7 @@ export default function Grid(){
 
     function tryAgain(){
         setAttempt(['', '', '', '', ''])
+        setId(0)
     }
 
     return(
@@ -57,7 +47,7 @@ export default function Grid(){
                 {Array(5).fill().map((_, i) => {
                     return <String key={i} attempt={attempt[i]} tried={i < id} trueWord={trueWord}/>
                 })}
-                <Keyboard write={write} try={tryIt} backspace={backspace}/>
+                <Keyboard write={write} tryIt={tryIt} backspace={backspace}/>
             </div>
         </>
     )

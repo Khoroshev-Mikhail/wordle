@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './keyboard.css'
 
 // https://overreacted.io/a-complete-guide-to-useeffect/
@@ -8,8 +8,63 @@ import './keyboard.css'
 
 //Переписать через хуки
 //Переписать покемоны через хуки
+const firstRowKeyboard = ['q','w','e','r','t','y','u','i','o','p'];
+const secondRowKeyboard =['a','s','d','f','g','h','j','k','l'];
+const thirdRowKeyboard =['z','x','c','v','b','n','m'];
 
-export default class Keyboard extends React.Component{
+export default function Keyboard(props){
+    function pressKey(e){
+        let key = e.target.value
+        props.write(key)
+    }
+    useEffect(()=>{
+        function keyboardKeydown(e){
+            if(e.key === 'Enter'){
+                props.tryIt()
+            } else if(e.key === 'Backspace'){
+                props.backspace()
+            } else{
+                if(e.keyCode >= 65 && e.keyCode <= 90){
+                    props.write(e.key)
+                }
+            }
+        }
+        document.addEventListener("keydown", keyboardKeydown)
+        return ()=>{
+            document.removeEventListener('keydown', keyboardKeydown)
+        }
+    })
+    return(
+        <div className="keyboard">
+            <div className="keyboard__row">
+                {firstRowKeyboard.map(key => {
+                    return (
+                        <button key={key} onClick={pressKey} value={key}>{key}</button>
+                    )
+                })}
+            </div>
+            <div className="keyboard__row">
+            {secondRowKeyboard.map(key => {
+                    return (
+                        <button key={key} onClick={pressKey} value={key}>{key}</button>
+                    )
+                })}
+            </div>
+            <div className="keyboard__row">
+                <button onClick={props.tryIt} value="enter">enter</button>
+                {thirdRowKeyboard.map(key => {
+                    return (
+                        <button key={key} onClick={pressKey} value={key}>{key}</button>
+                    )
+                })}
+                <button onClick={props.backspace} value="backspace">backspace</button>
+            </div>
+        </div>
+    )
+    
+}
+
+class Keyboard2 extends React.Component{
     constructor(props){
         super(props)
     }
@@ -18,7 +73,7 @@ export default class Keyboard extends React.Component{
         this.props.write(key)
     }
     keyboardKeydown = (e) => {
-        console.log("e", e);
+        //console.log("e", e);
         if(e.key === 'Enter'){
             this.props.try()
         } else if(e.key === 'Backspace'){
@@ -46,37 +101,26 @@ export default class Keyboard extends React.Component{
         return(
             <div className="keyboard">
                 <div className="keyboard__row">
-                    <button onClick={this.pressKey} value="q">q</button>
-                    <button onClick={this.pressKey} value="w">w</button>
-                    <button onClick={this.pressKey} value="e">e</button>
-                    <button onClick={this.pressKey} value="r">r</button>
-                    <button onClick={this.pressKey} value="t">t</button>
-                    <button onClick={this.pressKey} value="y">y</button>
-                    <button onClick={this.pressKey} value="u">u</button>
-                    <button onClick={this.pressKey} value="i">i</button>
-                    <button onClick={this.pressKey} value="o">o</button>
-                    <button onClick={this.pressKey} value="p">p</button>
+                    {firstRowKeyboard.map(key => {
+                        return (
+                            <button onClick={this.pressKey} value={key}>{key}</button>
+                        )
+                    })}
                 </div>
                 <div className="keyboard__row">
-                    <button onClick={this.pressKey} value="a">a</button>
-                    <button onClick={this.pressKey} value="s">s</button>
-                    <button onClick={this.pressKey} value="d">d</button>
-                    <button onClick={this.pressKey} value="f">f</button>
-                    <button onClick={this.pressKey} value="g">g</button>
-                    <button onClick={this.pressKey} value="h">h</button>
-                    <button onClick={this.pressKey} value="j">j</button>
-                    <button onClick={this.pressKey} value="k">k</button>
-                    <button onClick={this.pressKey} value="l">l</button>
+                {secondRowKeyboard.map(key => {
+                        return (
+                            <button onClick={this.pressKey} value={key}>{key}</button>
+                        )
+                    })}
                 </div>
                 <div className="keyboard__row">
                     <button onClick={this.props.try} value="enter">enter</button>
-                    <button onClick={this.pressKey} value="z">z</button>
-                    <button onClick={this.pressKey} value="x">x</button>
-                    <button onClick={this.pressKey} value="c">c</button>
-                    <button onClick={this.pressKey} value="v">v</button>
-                    <button onClick={this.pressKey} value="b">b</button>
-                    <button onClick={this.pressKey} value="n">n</button>
-                    <button onClick={this.pressKey} value="m">m</button>
+                    {thirdRowKeyboard.map(key => {
+                        return (
+                            <button onClick={this.pressKey} value={key}>{key}</button>
+                        )
+                    })}
                     <button onClick={this.props.backspace} value="backspace">backspace</button>
                 </div>
             </div>
