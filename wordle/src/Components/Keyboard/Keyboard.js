@@ -12,7 +12,9 @@ const firstRowKeyboard = ['q','w','e','r','t','y','u','i','o','p'];
 const secondRowKeyboard =['a','s','d','f','g','h','j','k','l'];
 const thirdRowKeyboard =['z','x','c','v','b','n','m'];
 
-export default function Keyboard(props){
+export default memo(Keyboard)
+
+function Keyboard(props){
     function pressKey(e){
         let key = e.target.value
         props.write(key)
@@ -33,7 +35,7 @@ export default function Keyboard(props){
         return ()=>{
             document.removeEventListener('keydown', keyboardKeydown)
         }
-    })
+    }, [backspace, write, tryIt])
     return(
         <div className="keyboard">
             <div className="keyboard__row">

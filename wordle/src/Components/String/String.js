@@ -1,7 +1,9 @@
-import React from "react";
+import React, {memo} from "react";
 import './string.css'
 
-export default function String(props){
+export default memo(String);
+
+function String(props){
     function isHit(i){
         if(!props.attempt[i]){
             return ''

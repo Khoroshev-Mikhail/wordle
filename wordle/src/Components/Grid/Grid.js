@@ -1,51 +1,47 @@
-import React, {useState} from "react";
+import React, {useState, useCallback} from "react";
 import Keyboard from "../Keyboard/Keyboard";
 import String from "../String/String";
 import './grid.css'
 
 
 const trueWord = 'SOFIA';
+const ATTEMPTS = 5;
 
 export default function Grid(){
-    const [id, setId] = useState(0);
-    const [attempt, setAttempt] = useState(['', '', '', '', '']);
-    function write(key){
-        if(attempt[id].length < 5){
-            setAttempt(arr => {
-                const newArr = [...arr]
-                newArr[id] += key
-                return newArr
-            })
-        }
-    }
-    function tryIt(){
+    const [attempt, setAttempt] = useState([]);
+    const [word, setWord] = useState("");
+
+    const write = useCallback(function(key){
+        setWord(word => word.length === 5 ? word : word + key);
+    }, []);
+
+    const tryIt = useCallback(function(){
         if(attempt[id].toLowerCase() === trueWord.toLowerCase()){
             alert('Congrats! U are winner! Pls try again!')
-        } else if(attempt[id].length == 5 && id < 4){ //Второе условие на случай если заполнены все 5 попыток
-            setId(id + 1)
+        } else if(word === 5 && attempt.length < ATTEMPTS){ //Второе условие на случай если заполнены все 5 попыток
+            setAttempt(arr => [...arr, word])
+            setWord("")
         }
-    }
-    function backspace(){
-        if(id < 5){ //Когда заполнены все 5 попыток, id = 5 и тогда ошибка
-            setAttempt(arr => {
-                const newArr = [...arr]
-                newArr[id] = newArr[id].slice(0,-1)
-                return newArr
-            })
-        }
-    }
+    }, [word]);
 
-    function tryAgain(){
-        setAttempt(['', '', '', '', ''])
-        setId(0)
-    }
+    const backspace = useCallback(function(){
+        setWord(word => word.slice(0, -1))
+    }, []);
+
+    const tryAgain = useCallback(function(){
+        setAttempt([])
+        setWord("")
+    }, []);
 
     return(
         <>
             <div className="grid">
                 <button onClick={tryAgain}>Try Again</button>
-                {Array(5).fill().map((_, i) => {
-                    return <String key={i} attempt={attempt[i]} tried={i < id} trueWord={trueWord}/>
+                {attempt.map((word, i) => {
+                    return <String key={i} attempt={word} tried={true} trueWord={trueWord}/>
+                })}
+                {Array(ATTEMPTS - attempt.length).fill().map((_, i) => {
+                    return <String key={i} tried={false}/>
                 })}
                 <Keyboard write={write} tryIt={tryIt} backspace={backspace}/>
             </div>
