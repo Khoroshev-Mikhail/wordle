@@ -5,22 +5,28 @@ import './grid.css'
 
 
 const trueWord = 'SOFIA';
-const ATTEMPTS = 15;
+const ATTEMPTS = 5;
+
+//Перевести на редакс
+//Сделать подсветку правильно ведённых букв
+//Правильно подключить стили css
+
 
 export default function Grid(){
     const [word, setWord] = useState("");
-    const [attempt, setAttempt] = useState(['aaaaa']); 
+    const [attempt, setAttempt] = useState([]);
+    const [isWinner, setIsWinner] = useState(false)
 
     const write = useCallback(function(key){
         setWord(word => word.length === 5 ? word : (word + key));
-    }, [word]);
+    }, []);
     
     const tryIt = useCallback(function(){
-        console.log('ya tut')
-        console.log(attempt)
-        if(attempt[attempt.length - 1].toLowerCase() === trueWord.toLowerCase()){
-            alert('Congrats! U are winner! Pls try again!')
-        } else if(word.length === 5 && attempt.length < ATTEMPTS){
+        if(word.length === 5 && word.toLowerCase() === trueWord.toLowerCase()){
+            setIsWinner(true)
+            alert('Congrats! U are winner!')
+        }
+        if(word.length === 5 && attempt.length < ATTEMPTS){
             setAttempt(arr => [...arr, word])
             setWord("")
         }
@@ -31,8 +37,9 @@ export default function Grid(){
     }, []);
 
     const tryAgain = useCallback(function(){
-        setAttempt([""])
+        setAttempt([])
         setWord("")
+        setIsWinner(false)
     }, []);
 
     return(
@@ -50,11 +57,17 @@ export default function Grid(){
                     return <String 
                         key={i} 
                         tried={false} 
-                        trueWord={trueWord} 
-                        attempt={i === 0 ? word : false} 
+                        attempt={i === 0 ? word : false}
+                        current={i === 0 ? true : false} 
+                        trueWord={trueWord} //Может глобально прокинуть эту константу с index.js?
                     />
                 })}
-                {<Keyboard write={write} tryIt={tryIt} backspace={backspace}/>}
+                {<Keyboard 
+                    write={write} 
+                    tryIt={tryIt} 
+                    backspace={backspace}
+                    isWinner={isWinner}
+                />}
             </div>
         </>
     )

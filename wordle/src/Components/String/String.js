@@ -20,7 +20,7 @@ function String(props){
         }
     }*/
     return(
-        <div className="string" style={{background: props.tried ? 'green' : 'red'}}>
+        <div className="string" style={{border: props.current ? '5px solid black' : 'none'}}>
             {Array(5).fill().map((_, i) => {
                 return (
                     <div key={i}> {props.attempt && props.attempt[i]}</div>

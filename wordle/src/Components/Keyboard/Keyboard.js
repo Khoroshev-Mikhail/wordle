@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { memo } from "react";
+import React, { useEffect, memo } from "react";
 import './keyboard.css'
 
 // https://overreacted.io/a-complete-guide-to-useeffect/
@@ -14,23 +13,31 @@ const thirdRowKeyboard =['z','x','c','v','b','n','m'];
 export default memo(Keyboard)
 
 function Keyboard(props){
-    function pressKey(e){
-        let key = e.target.value
-        props.write(key)
-    }
-    useEffect(()=>{
-        function keyboardKeydown(e){
-            if(e.key === 'Enter'){
-                console.log('enter')
-                props.tryIt()
-            } else if(e.key === 'Backspace'){
-                props.backspace()
-            } else{
-                if(e.keyCode >= 65 && e.keyCode <= 90){
-                    props.write(e.key)
-                }
+    function keyboardKeydown(e){
+        if(e.key === 'Enter'){
+            props.tryIt()
+        } else if(e.key === 'Backspace'){
+            props.backspace()
+        } else{
+            if(e.keyCode >= 65 && e.keyCode <= 90){
+                props.write(e.key)
             }
         }
+    }
+    function pressKey(e){
+        //Дублирование кода с line 18:26
+        let key = e.target.value
+        if(key === 'Enter'){
+            props.tryIt()
+        } else if(key === 'Backspace'){
+            props.backspace()
+        } else{
+            //Нет проверки на keyCode
+            props.write(key)
+        }
+    }
+    useEffect(()=>{
+        //Как написать эффект который применяет document.removeEventListener('keydown', keyboardKeydown) когда state.isWinner === true?
         document.addEventListener("keydown", keyboardKeydown)
         return ()=>{
             document.removeEventListener('keydown', keyboardKeydown)
@@ -39,27 +46,22 @@ function Keyboard(props){
     return(
         <div className="keyboard">
             <div className="keyboard__row">
+                {/*елательное оформление кода как здесь или как на line:56 и line:60?*/}
                 {firstRowKeyboard.map(key => {
                     return (
-                        <button key={key} onClick={pressKey} value={key}>{key}</button>
+                        //Нужно ли выносить в отдельную компоненту? 
+                        //По сути поменяется только <button ...props></button> на <Keyboard_button ...props />
+                        <button key={key} disabled={props.isWinner} onClick={pressKey} value={key}>{key}</button>
                     )
                 })}
             </div>
             <div className="keyboard__row">
-            {secondRowKeyboard.map(key => {
-                    return (
-                        <button key={key} onClick={pressKey} value={key}>{key}</button>
-                    )
-                })}
+                {secondRowKeyboard.map(key => <button key={key} disabled={props.isWinner} onClick={pressKey} value={key}>{key}</button> )}
             </div>
             <div className="keyboard__row">
-                <button onClick={props.tryIt} value="Enter">enter</button>
-                {thirdRowKeyboard.map(key => {
-                    return (
-                        <button key={key} onClick={pressKey} value={key}>{key}</button>
-                    )
-                })}
-                <button onClick={props.backspace} value="Backspace">backspace</button>
+                <button disabled={props.isWinner} onClick={props.tryIt} value="Enter">Enter</button>
+                {thirdRowKeyboard.map(key => <button key={key} disabled={props.isWinner} onClick={pressKey} value={key}>{key}</button>)}
+                <button disabled={props.isWinner} onClick={props.backspace} value="Backspace">Backspace</button>
             </div>
         </div>
     )
