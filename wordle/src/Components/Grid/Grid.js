@@ -12,61 +12,62 @@ const ATTEMPTS = 5;
 //Правильно подключить стили css
 
 
-export default function Grid(){
-    const [word, setWord] = useState("");
-    const [attempt, setAttempt] = useState([]);
-    const [isWinner, setIsWinner] = useState(false)
+//Ошибки
+//Когда нажимаешь Enter всё выполняется как и должно, за исключением случаев, когда button Try Again в фокусе 
+
+export default function Grid(props){
 
     const write = useCallback(function(key){
-        setWord(word => word.length === 5 ? word : (word + key));
+        props.setWord(word => word.length === 5 ? word : (word + key));
     }, []);
     
     const tryIt = useCallback(function(){
-        if(word.length === 5 && word.toLowerCase() === trueWord.toLowerCase()){
-            setIsWinner(true)
+        if(props.word.length === 5 && props.word.toLowerCase() === trueWord.toLowerCase()){
+            props.setIsWinner(true)
             alert('Congrats! U are winner!')
         }
-        if(word.length === 5 && attempt.length < ATTEMPTS){
-            setAttempt(arr => [...arr, word])
-            setWord("")
+        if(props.word.length === 5 && props.attempts.length < ATTEMPTS){
+            props.setAttempts(arr => [...arr, props.word])
+            props.setWord("")
         }
-    }, [word, attempt]);
+    }, [props.word, props.attempt]);
 
     const backspace = useCallback(function(){
-        setWord(word => word.slice(0, -1))
+        props.setWord(word => word.slice(0, -1))
     }, []);
 
     const tryAgain = useCallback(function(){
-        setAttempt([])
-        setWord("")
-        setIsWinner(false)
+        props.setAttempts([])
+        props.setWord("")
+        props.setIsWinner(false)
     }, []);
 
     return(
         <>
             <div className="grid">
                 <button onClick={tryAgain}>Try Again</button>
-                {attempt.map((latestWord, i) => {
+                {props.attempt.map((latestWord, i) => {
                     return <String 
                         key={i} 
                         attempt={latestWord} 
                         tried={true}
                     />
                 })}
-                {Array(ATTEMPTS - attempt.length).fill().map((_, i) => {
+                {Array(ATTEMPTS - props.attempt.length).fill().map((_, i) => {
                     return <String 
                         key={i} 
                         tried={false} 
-                        attempt={i === 0 ? word : false}
+                        attempt={i === 0 ? props.word : false}
                         current={i === 0 ? true : false} 
                         trueWord={trueWord} //Может глобально прокинуть эту константу с index.js?
                     />
                 })}
+                {/*Если пользователь зашёл с телефона, нужно не подключать компоненту, а сразу вывести "родную" клавиатуру!*/}
                 {<Keyboard 
                     write={write} 
                     tryIt={tryIt} 
                     backspace={backspace}
-                    isWinner={isWinner}
+                    isWinner={props.isWinner}
                 />}
             </div>
         </>

@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Grid from './Components/Grid/Grid';
+import { Provider } from 'react-redux';
+import store from './Store/Store';
+import Grid_Wrapper from './Components/Grid/Grid_Wrapper';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Grid />
+    <Provider store={store}>
+      <Grid_Wrapper />
+    </Provider>
   </React.StrictMode>
 );
 
