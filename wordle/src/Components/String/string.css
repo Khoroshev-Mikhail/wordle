@@ -16,9 +16,9 @@
     text-transform: uppercase;
     border: 3px solid white;
 }
-.string__letterGreen{
-    background-color: green;
-}
 .string__letterYellow{
     background-color: yellow;
+}
+.string__letterGreen{
+    background-color: green;
 }

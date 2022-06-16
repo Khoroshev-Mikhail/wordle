@@ -38,6 +38,7 @@ function Keyboard(props){
     }
     useEffect(()=>{
         //Как написать эффект который применяет document.removeEventListener('keydown', keyboardKeydown) когда state.isWinner === true?
+        //Может быть делать какую-то одну проверку isWinner в начале кода?
         document.addEventListener("keydown", keyboardKeydown)
         return ()=>{
             document.removeEventListener('keydown', keyboardKeydown)
@@ -46,7 +47,7 @@ function Keyboard(props){
     return(
         <div className="keyboard">
             <div className="keyboard__row">
-                {/*елательное оформление кода как здесь или как на line:56 и line:60?*/}
+                {/*Желательное оформление кода как здесь или как на line:56 и line:60?*/}
                 {firstRowKeyboard.map(key => {
                     return (
                         //Нужно ли выносить в отдельную компоненту? 

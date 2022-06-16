@@ -27,10 +27,7 @@ function wordReducer(state = initialState.word, action){
 //Переписать в ошибка в связке с TryIT
 function attemptsReducer(state = initialState.attempts, action){
     if(action.type === ATTEMPTS){
-        if(state.length > 0){
-            return [...state, action.attempt]
-        }
-        return [action.attempt] //Здесь
+        return action.attempt
     }
     return state
 }

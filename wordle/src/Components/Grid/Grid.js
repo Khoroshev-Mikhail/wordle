@@ -13,7 +13,7 @@ const ATTEMPTS = 5;
 
 
 //Ошибки
-//Когда нажимаешь Enter всё выполняется как и должно, за исключением случаев, когда button Try Again в фокусе 
+//Когда нажимаешь Enter всё выполняется как и должно, за исключением случаев, когда в фокусе button "Try Again"
 
 export default function Grid(props){
     const write = useCallback(function(key){
@@ -28,7 +28,7 @@ export default function Grid(props){
                 props.setIsWinner(true)
                 alert('Congrats! U are winner!')
             }else{
-                props.setAttempts(props.word)
+                props.setAttempts([...props.attempts, props.word])
                 props.setWord('')
             }
         }
@@ -53,6 +53,7 @@ export default function Grid(props){
                         key={i} 
                         attempt={latestWord} 
                         tried={true}
+                        trueWord={trueWord} //Может глобально прокинуть эту константу с index.js?
                     />
                 })}
                 {Array(ATTEMPTS - props.attempts.length).fill().map((_, i) => {
@@ -64,7 +65,7 @@ export default function Grid(props){
                         trueWord={trueWord} //Может глобально прокинуть эту константу с index.js?
                     />
                 })}
-                {/*Если пользователь зашёл с телефона, нужно не подключать компоненту, а сразу вывести "родную" клавиатуру!*/}
+                {/*Если пользователь зашёл с телефона, может не подключать компоненту, а сразу вывести "родную" клавиатуру устройства!*/}
                 {<Keyboard 
                     write={write} 
                     tryIt={tryIt} 
