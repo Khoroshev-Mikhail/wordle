@@ -14,8 +14,8 @@ const IS_WINNER = "IS_WINNER"
 
 //Action Creators
 const wordActionCreator = (word) => ({type: WORD, word})
-const attemptsActionCreator = (attempts) => ({type: ATTEMPTS, attempts})
-const isWinnerActionCreator = (isWinner) => ({type: IS_WINNER, isWinner})
+const attemptsActionCreator = (attempt) => ({type: ATTEMPTS, attempt})
+const isWinnerActionCreator = (isWinner) => ({type: IS_WINNER, value: isWinner})
 
 //Reducers
 function wordReducer(state = initialState.word, action){
@@ -24,15 +24,19 @@ function wordReducer(state = initialState.word, action){
     }
     return state
 }
+//Переписать в ошибка в связке с TryIT
 function attemptsReducer(state = initialState.attempts, action){
     if(action.type === ATTEMPTS){
-        return action.attempts
+        if(state.length > 0){
+            return [...state, action.attempt]
+        }
+        return [action.attempt] //Здесь
     }
     return state
 }
 function isWinnerReducer(state = initialState.isWinner, action){
     if(action.type === IS_WINNER){
-        return action.isWinner
+        return action.value
     }
     return state
 }

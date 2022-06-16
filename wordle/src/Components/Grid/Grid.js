@@ -16,28 +16,30 @@ const ATTEMPTS = 5;
 //Когда нажимаешь Enter всё выполняется как и должно, за исключением случаев, когда button Try Again в фокусе 
 
 export default function Grid(props){
-
     const write = useCallback(function(key){
-        props.setWord(word => word.length === 5 ? word : (word + key));
-    }, []);
+        if(props.word.length < 5){
+            props.setWord(props.word + key)
+        }
+    }, [props.word]);
     
     const tryIt = useCallback(function(){
-        if(props.word.length === 5 && props.word.toLowerCase() === trueWord.toLowerCase()){
-            props.setIsWinner(true)
-            alert('Congrats! U are winner!')
+        if(props.word.length === 5){
+            if(props.word.toLowerCase() === trueWord.toLowerCase()){
+                props.setIsWinner(true)
+                alert('Congrats! U are winner!')
+            }else{
+                props.setAttempts(props.word)
+                props.setWord('')
+            }
         }
-        if(props.word.length === 5 && props.attempts.length < ATTEMPTS){
-            props.setAttempts(arr => [...arr, props.word])
-            props.setWord("")
-        }
-    }, [props.word, props.attempt]);
+    }, [props.word, props.attempts]);
 
     const backspace = useCallback(function(){
-        props.setWord(word => word.slice(0, -1))
-    }, []);
+        props.setWord(props.word.slice(0, -1))
+    }, [props.word]);
 
     const tryAgain = useCallback(function(){
-        props.setAttempts([])
+        props.setAttempts([]) //Здесь ошибка
         props.setWord("")
         props.setIsWinner(false)
     }, []);
@@ -46,14 +48,14 @@ export default function Grid(props){
         <>
             <div className="grid">
                 <button onClick={tryAgain}>Try Again</button>
-                {props.attempt.map((latestWord, i) => {
+                {props.attempts.map((latestWord, i) => {
                     return <String 
                         key={i} 
                         attempt={latestWord} 
                         tried={true}
                     />
                 })}
-                {Array(ATTEMPTS - props.attempt.length).fill().map((_, i) => {
+                {Array(ATTEMPTS - props.attempts.length).fill().map((_, i) => {
                     return <String 
                         key={i} 
                         tried={false} 
