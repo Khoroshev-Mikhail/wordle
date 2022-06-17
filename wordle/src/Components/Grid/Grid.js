@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from "react";
+import React, {useCallback} from "react";
 import Keyboard from "../Keyboard/Keyboard";
 import String from "../String/String";
 import './grid.css'
@@ -7,12 +7,12 @@ import './grid.css'
 const trueWord = 'SOFIA';
 const ATTEMPTS = 5;
 
-//Перевести на редакс
-//Сделать подсветку правильно ведённых букв
-//Правильно подключить стили css
+
 
 
 //Ошибки
+//Warning: Cannot update a component (`Connect(Grid)`) while rendering a different component (`String`). To locate the bad setState() call inside `String`, follow the stack trace as described in
+//Когда полностью угадываешь слово (победа) - не подсвечивает его буквы зелёным
 //Когда нажимаешь Enter всё выполняется как и должно, за исключением случаев, когда в фокусе button "Try Again"
 
 export default function Grid(props){
@@ -20,7 +20,7 @@ export default function Grid(props){
         if(props.word.length < 5){
             props.setWord(props.word + key)
         }
-    }, [props.word]);
+    }, [props.word]); //Warning на пропсы
     
     const tryIt = useCallback(function(){
         if(props.word.length === 5){
@@ -32,27 +32,29 @@ export default function Grid(props){
                 props.setWord('')
             }
         }
-    }, [props.word, props.attempts]);
+    }, [props.word, props.attempts]); //Warning на пропсы
 
     const backspace = useCallback(function(){
-        props.setWord(props.word.slice(0, -1))
-    }, [props.word]);
+        if(!props.isWinner){ //Чтобы не было возможности стереть слово после "Победы". Рефакторинг?
+            props.setWord(props.word.slice(0, -1))
+        }
+    }, [props.word, props.isWinner]); //Warning на пропсы
 
     const tryAgain = useCallback(function(){
         props.setAttempts([]) //Здесь ошибка
         props.setWord("")
         props.setIsWinner(false)
-    }, []);
-
+    }, []); //Warning на пропсы
     return(
         <>
             <div className="grid">
-                <button onClick={tryAgain}>Try Again</button>
                 {props.attempts.map((latestWord, i) => {
                     return <String 
                         key={i} 
                         attempt={latestWord} 
                         tried={true}
+                        setTrueLetters = {props.setTrueLetters}
+                        setIncludedLetters = {props.setIncludedLetters}
                         trueWord={trueWord} //Может глобально прокинуть эту константу с index.js?
                     />
                 })}
@@ -72,6 +74,9 @@ export default function Grid(props){
                     backspace={backspace}
                     isWinner={props.isWinner}
                 />}
+                <div>
+                    <button onClick={tryAgain}>Try Again</button>
+                </div>
             </div>
         </>
     )
