@@ -72,6 +72,9 @@ export default function Grid(props){
                     tryIt={tryIt} 
                     backspace={backspace}
                     isWinner={props.isWinner}
+                    trueLetters={props.trueLetters}
+                    includedLetters={props.includedLetters}
+                    attempts={props.attempts}
                 />}
                 <div>
                     <button onClick={tryAgain}>Try Again</button>

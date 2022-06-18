@@ -15,8 +15,8 @@ function String(props){
                 const trueHit = props.tried && currentletter === trueLetter
                 const hit = props.tried && props.trueWord.toLowerCase().includes(currentletter)
 
-                if(trueHit){
-                    props.setTrueLetters(trueHit)
+                if(trueHit && trueLetter !== ''){
+                    props.setTrueLetters(trueLetter)
                 }
                 if(hit){
                     props.setIncludedLetters(currentletter)

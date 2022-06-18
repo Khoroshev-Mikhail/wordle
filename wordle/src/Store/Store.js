@@ -39,13 +39,17 @@ function attemptsReducer(state = initialState.attempts, action){
 }
 function trueLettersReducer(state = initialState.trueLetters, action){
     if(action.type === TRUE_LETTERS){
-        return [...state, action.letter]
+        if(!state.includes(action.letter)){
+            return [...state, action.letter]
+        }
     }
     return state
 }
 function includedLettersReducer(state = initialState.includedLetters, action){
     if(action.type === INCLUDED_LETTERS){
-        return [...state, action.letter]
+        if(!state.includes(action.letter)){
+            return [...state, action.letter]
+        }
     }
     return state
 }
