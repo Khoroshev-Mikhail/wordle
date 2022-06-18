@@ -8,8 +8,6 @@ const trueWord = 'SOFIA';
 const ATTEMPTS = 5;
 
 
-
-
 //Ошибки
 //Warning: Cannot update a component (`Connect(Grid)`) while rendering a different component (`String`). To locate the bad setState() call inside `String`, follow the stack trace as described in
 //Когда полностью угадываешь слово (победа) - не подсвечивает его буквы зелёным
@@ -32,7 +30,7 @@ export default function Grid(props){
                 props.setWord('')
             }
         }
-    }, [props.word, props.attempts]); //Warning на пропсы
+    }, [props.word, props.attempts, props.isWinner]); //Warning на пропсы
 
     const backspace = useCallback(function(){
         if(!props.isWinner){ //Чтобы не было возможности стереть слово после "Победы". Рефакторинг?
@@ -46,7 +44,7 @@ export default function Grid(props){
         props.setIsWinner(false)
     }, []); //Warning на пропсы
     return(
-        <>
+        <div className="main">
             <div className="grid">
                 {props.attempts.map((latestWord, i) => {
                     return <String 
@@ -67,6 +65,7 @@ export default function Grid(props){
                         trueWord={trueWord} //Может глобально прокинуть эту константу с index.js?
                     />
                 })}
+                </div>
                 {/*Если пользователь зашёл с телефона, может не подключать компоненту, а сразу вывести "родную" клавиатуру устройства!*/}
                 {<Keyboard 
                     write={write} 
@@ -77,8 +76,7 @@ export default function Grid(props){
                 <div>
                     <button onClick={tryAgain}>Try Again</button>
                 </div>
-            </div>
-        </>
+        </div>
     )
 }
 

@@ -1,19 +1,36 @@
 .keyboard {
     display: flex;
     flex-direction: column;
+    font-size: 16px;
+    margin: 8px auto;
 }
 .keyboard__row{
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin: 0 auto 8px;
 }
 .keyboard__row button {
+    margin: 0 3px 0 3px;
     display: inline-block;
-    border: 1px solid black;
+    border: none;
+    border-radius: 3px;
     min-width: 30px;
-    height: 30px;
+    height: 45px;
     line-height: 30px;
     text-align: center;
     text-transform: uppercase;
     cursor: pointer;
+    background-color: #d3d6da;
+    font-weight: bold;
+}
+.half{
+    flex: 0.5;
+}
+.one-and-half{
+    flex: 1.5;
+    font-size: 12px;
+    padding: 0px;
+    text-align: center;
 }

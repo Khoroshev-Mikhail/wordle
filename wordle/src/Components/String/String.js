@@ -6,7 +6,7 @@ export default memo(String);
 function String(props){
     //Рефакторинг? className
     return(
-        <div className="string" style={{border: props.current ? '1px solid black' : 'none'}}>
+        <div className="grid__string">
             {Array(5).fill().map((_, i) => {
 
                 const trueLetter = props.trueWord ? props.trueWord[i].toLowerCase() : ''
@@ -23,8 +23,11 @@ function String(props){
                 }
 
                 const letterClass = classNames({
-                    'string__letterGreen' : trueHit,
-                    'string__letterYellow': hit,
+                    'missed' : props.tried && !trueHit && !hit,
+                    'active' : props.current,
+                    'grid__letter' : true,
+                    'yellow': hit,
+                    'green' : trueHit,
                 })
                 return (
                     <div key={i} className={letterClass}> {props.attempt && props.attempt[i]}</div>
