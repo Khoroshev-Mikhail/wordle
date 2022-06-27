@@ -12,6 +12,7 @@ const ATTEMPTS = 5;
 //Warning: Cannot update a component (`Connect(Grid)`) while rendering a different component (`String`). To locate the bad setState() call inside `String`, follow the stack trace as described in
 //Когда полностью угадываешь слово (победа) - не подсвечивает его буквы зелёным
 //Когда нажимаешь Enter всё выполняется как и должно, за исключением случаев, когда в фокусе button "Try Again"
+//На клаве не очищаются классы
 
 export default function Grid(props){
     const write = useCallback(function(key){

@@ -52,7 +52,7 @@ function Keyboard(props){
             'greenKey': props.trueLetters.includes(key),
         })
     }
-    console.log(props)
+
     return(
         <div className="keyboard">
             <div className="keyboard__row">
