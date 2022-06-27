@@ -1,99 +1,78 @@
-const { legacy_createStore, combineReducers, bindActionCreators } = require("redux")
+import { configureStore, createSlice } from "@reduxjs/toolkit"
 
-//initialState
-const initialState = {
-    word: '',
-    attempts: [],
-    trueLetters: [],
-    includedLetters: [],
-    isWinner: false
-}
-
-//Actions
-const WORD = "WORD"
-const ATTEMPTS = "ATTEMPTS"
-const TRUE_LETTERS = "TRUE_LETTERS"
-const INCLUDED_LETTERS = "INCLUDED_LETTERS"
-const IS_WINNER = "IS_WINNER"
-
-//Action Creators
-const wordActionCreator = (word) => ({type: WORD, word})
-const attemptsActionCreator = (attempt) => ({type: ATTEMPTS, attempt})
-const isWinnerActionCreator = (isWinner) => ({type: IS_WINNER, isWinner})
-const trueLettersActionCreator = (letter) => ({type: TRUE_LETTERS, letter})
-const includedLettersActionCreator = (letter) => ({type: INCLUDED_LETTERS, letter})
-
-
-//Reducers
-function wordReducer(state = initialState.word, action){
-    if(action.type === WORD){
-        return action.word
+//Slicers
+const wordSlicer = createSlice({
+    name: "word",
+    initialState: '',
+    reducers: {
+        wordActionCreator: (state, action) => action.payload //Как правильно называть поле?
     }
-    return state
-}
-function attemptsReducer(state = initialState.attempts, action){
-    if(action.type === ATTEMPTS){
-        return action.attempt
-    }
-    return state
-}
-function trueLettersReducer(state = initialState.trueLetters, action){
-    if(action.type === TRUE_LETTERS){
-        if(!state.includes(action.letter)){
-            return [...state, action.letter]
-        }
-    }
-    return state
-}
-function includedLettersReducer(state = initialState.includedLetters, action){
-    if(action.type === INCLUDED_LETTERS){
-        if(!state.includes(action.letter)){
-            return [...state, action.letter]
-        }
-    }
-    return state
-}
-function isWinnerReducer(state = initialState.isWinner, action){
-    if(action.type === IS_WINNER){
-        return action.isWinner
-    }
-    return state
-}
-
-const reducers = combineReducers({
-    word: wordReducer,
-    attempts: attemptsReducer,
-    trueLetters: trueLettersReducer,
-    includedLetters: includedLettersReducer,
-    isWinner: isWinnerReducer,
 })
+export const { wordActionCreator } = wordSlicer.actions
+export const wordReducer = wordSlicer.reducer
+
+const attemptsSlicer = createSlice({
+    name: 'attempts',
+    initialState: [],
+    reducers: {
+        attemptsActionCreator: (state, action) => action.payload
+    }
+})
+export const { attemptsActionCreator } = attemptsSlicer.actions
+export const attemptsReducer = attemptsSlicer.reducer
+
+//Это хранилище используется для хранения угаданных пользователем букв (введенный пользователем символом = символу из "правильного слова" и находится в той же позиции)
+const trueLettersSlicer = createSlice({
+    name: 'trueLetters',
+    initialState: [],
+    reducers: {
+        trueLettersActionCreator: (state, action) => {
+            if(!state.includes(action.payload)){
+                return [...state, action.payload]
+            }
+        }
+    }
+})
+export const {trueLettersActionCreator} = trueLettersSlicer.actions
+export const trueLettersReducer = trueLettersSlicer.reducer
+
+//Это хранилище используется для хранения угаданных пользователем букв (введенный пользователем символом есть в "правильном слове" но не в той же позиции)
+const includedLettersSlicer = createSlice({
+    name: 'includedLetters',
+    initialState: [],
+    reducers: {
+        includedLettersActionCreator: (state, action) => {
+            if(!state.includes(action.payload)){
+                return [...state, action.payload]
+            }
+        }
+    }
+})
+export const { includedLettersActionCreator } = includedLettersSlicer.actions
+export const includedLettersReducer = includedLettersSlicer.reducer 
+
+const isWinnerSlicer = createSlice({
+    name: 'isWinner',
+    initialState: false,
+    reducers: {
+        isWinnerActionCreator: (state, action) => action.payload
+    }
+})
+export const { isWinnerActionCreator } = isWinnerSlicer.actions;
+export const isWinnerReducer = isWinnerSlicer.reducer;
 
 //Store
-const store = legacy_createStore(reducers)
+const store = configureStore({
+    reducer: {
+        word: wordReducer,
+        attempts: attemptsReducer,
+        trueLetters: trueLettersReducer,
+        includedLetters: includedLettersReducer,
+        isWinner: isWinnerReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware(),
+})
 export default store
-
-//MSTP & MDTP
-export function mapStateToProps(){
-    return function(state){
-        return {
-            word: state.word,
-            attempts: state.attempts,
-            trueLetters: state.trueLetters,
-            includedLetters: state.includedLetters,
-            isWinner: state.isWinner
-        }
-    }
-}
-export function mapDispatchToProps(){
-    return function(dispatch){
-        return {
-            setWord: bindActionCreators(wordActionCreator, dispatch),
-            setAttempts: bindActionCreators(attemptsActionCreator, dispatch),
-            setTrueLetters: bindActionCreators(trueLettersActionCreator, dispatch),
-            setIncludedLetters: bindActionCreators(includedLettersActionCreator, dispatch),
-            setIsWinner: bindActionCreators(isWinnerActionCreator, dispatch),
-        }
-    }
-}
 
 
