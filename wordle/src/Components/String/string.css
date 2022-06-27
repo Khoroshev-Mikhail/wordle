@@ -1,24 +1,32 @@
-.string{
-    display: flex;
-    flex-direction: row;
+.grid__string{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
 }
-.string div{
-    display: inline-block;
-    border: none;
-    width: 70px;
-    height: 70px;
-    margin: 3px;
-    font-size: 60px;
-    line-height: 70px;
+.grid__letter{
+    height: 64px;
     text-align: center;
+    font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 3.4rem;
     color: white;
-    font-weight: bold;
+    box-sizing: border-box;
+    border: 3px solid #787c7e;
     text-transform: uppercase;
-    border: 3px solid white;
 }
-.string__letterGreen{
-    background-color: green;
+.missed {
+    background-color: #787c7e;
 }
-.string__letterYellow{
-    background-color: yellow;
+.yellow {
+    background-color: #c9b458;
+}
+.green{
+    background-color: #6aaa64;
+}
+.active{
+    border: 3px solid black;
+    color: black;
+    background-color: white;
+}
+.future{
+    border: 3px solid #787c7e;
 }
